@@ -9,12 +9,11 @@
 import Foundation
 
 protocol HTTPDomain {
-    var environment : HTTPEnvironment { get }
+    var environment: HTTPEnvironment { get }
 }
 
 extension HTTPDomain {
-    
-    var environment : HTTPEnvironment {
-        return .dev
+    var environment: HTTPEnvironment {
+        .dev
     }
 }

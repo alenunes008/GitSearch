@@ -8,19 +8,26 @@
 
 import Foundation
 
-class FakeService{
+class FakeService {
     func mockContentData(file: String) -> Data {
-        return getData(name: file)
+        getData(name: file)
     }
 
     func getData(name: String, withExtension: String = "json") -> Data {
         let bundle = Bundle(for: type(of: self))
         let fileUrl = bundle.url(forResource: name, withExtension: withExtension)
-        let data = try! Data(contentsOf: fileUrl!)
-        return data
+        guard let url = fileUrl else { return Data() }
+
+        do {
+            let data = try Data(contentsOf: url)
+            return data
+        } catch {
+            print(error.localizedDescription)
+        }
+        return Data()
     }
 
-    func getMock<T:Decodable>(model: T.Type, file : Data) -> T?{
+    func getMock<T: Decodable>(model: T.Type, file: Data) -> T? {
         do {
             let result = try JSONDecoder().decode(T.self, from: file)
             return result
@@ -28,4 +35,3 @@ class FakeService{
         return nil
     }
 }
-

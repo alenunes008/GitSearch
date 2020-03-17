@@ -18,13 +18,11 @@ class IntegrationTest: XCTestCase {
         req.get(success: { success in
             XCTAssertNotNil(success)
             expectation.fulfill()
-
-        }) {erro in
-            XCTAssertNil(erro)
+        }, failure: error in {
+            XCTAssertNotNil(error)
             expectation.fulfill()
-        }
 
+            })
         wait(for: [expectation], timeout: 60.0)
     }
-
 }

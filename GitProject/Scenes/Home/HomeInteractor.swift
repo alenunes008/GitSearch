@@ -13,7 +13,7 @@
 import UIKit
 
 protocol HomeBusinessLogic {
-    func doInteractorGit(id: String)
+    func doInteractorGit(identificador: String)
 }
 
 protocol HomeDataStore {
@@ -23,22 +23,19 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore {
     var presenter: HomePresentationLogic?
     var worker: HomeWorker?
 
-    // MARK: Do something
-
-    func doInteractorGit(id: String) {
+    // MARK: Do Worker
+    func doInteractorGit(identificador: String) {
         worker = HomeWorker()
-        let req = Home.Git.Request(id: id) { result in
+        let req = Home.Git.Request(identify: identificador)
+        worker?.doWorkGit(request: req, completion: { (result) in
             switch result {
             case .success(let response):
                 let gitModel = Home.Git.Response(gitModel: response)
                 self.presenter?.presentGit(response: gitModel)
-                break
             case .failure(let response):
                 let error = Home.Git.GitError(erro: response)
                 self.presenter?.presentError(error: error)
-                break
             }
-        }
-        worker?.doWorkGit(request: req)
+        })
     }
 }

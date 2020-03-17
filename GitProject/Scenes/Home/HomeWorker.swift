@@ -12,32 +12,31 @@
 
 import UIKit
 
-
 class HomeWorker {
-    func doWorkGit(request: Home.Git.Request) {
-        let params = ["q":"language:Java","sort":"stars","page":"\(request.id  )"].queryFormat()
+
+    func doWorkGit(request: Home.Git.Request, completion: @escaping (Result<GitModel, Error>) -> Void) {
+        let params = ["q": "language:Java", "sort": "stars", "page": "\(request.identify)"].queryFormat()
         let requestable = WorkerRequestable(queryString: params)
         let req: HTTRequest<GitModel> = HTTRequest(requestable: requestable)
-        req.get(success: { response in
-            guard let gitModel = response else {
-                request.completion(.failure(NSError(domain: "Erro na requisição da Tabela", code: 500, userInfo:nil)))
-                return
+
+        req.getNew { (result) in
+            switch result {
+            case .success(let model):
+                completion(.success(model))
+                print(model)
+            case .failure(let erro):
+                completion(.failure(NSError(domain: "Erro na requisição da Tabela", code: 500, userInfo: nil)))
+                print(erro)
             }
-            request.completion(.success(gitModel))
-            return
-        }) { (error) in
-            request.completion(.failure(error))
         }
     }
-    
 }
 struct WorkerRequestable: HTTPRequestable {
     var queryString: String
     var path: String {
-        return "search/repositories?" + queryString
+        "search/repositories?" + queryString
     }
     var url: URL {
-        return URL(string: environment.host+path)!
+        URL(string: environment.host + path)!
     }
 }
-

@@ -8,18 +8,14 @@
 
 import Foundation
 
-protocol HTTPRequestable : HTTPDomain {
-    
-    var path : String { get }
-    
-    var url  : URL { get }
-    
-    var queryString : String { get }
+protocol HTTPRequestable: HTTPDomain {
+    var path: String { get }
+    var url: URL { get }
+    var queryString: String { get }
 }
 
 extension HTTPRequestable {
-    
-    var headers : [String : String] {
-        return ["Content-Type" : "application/x-www-form-urlencoded"]
+    var headers: [String: String] {
+        ["Content-Type": "application/x-www-form-urlencoded"]
     }
 }

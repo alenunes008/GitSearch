@@ -43,11 +43,11 @@ struct Item: Codable {
 struct Owner: Codable {
     let login: String
     let avatarURL: String
-    let id: Int
+    let identify: Int
 
     enum CodingKeys: String, CodingKey {
         case login
-        case id
+        case identify = "id"
         case avatarURL = "avatar_url"
     }
 }

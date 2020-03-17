@@ -12,7 +12,6 @@
 
 import UIKit
 
-
 protocol DetailDataPassing {
   var dataStore: DetailDataStore? { get }
 }

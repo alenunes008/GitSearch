@@ -10,13 +10,13 @@ import Foundation
 
 extension Dictionary {
     func queryFormat() -> String {
-        var cs = CharacterSet.urlQueryAllowed
+        var caracterQuery = CharacterSet.urlQueryAllowed
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
-        cs.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
-        return self.map{
-            let keyEnconding = String(describing: $0).addingPercentEncoding(withAllowedCharacters: cs) ?? ""
-            let valueEnconding = String(describing: $1).addingPercentEncoding(withAllowedCharacters: cs) ?? ""
+        caracterQuery.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
+        return self.map {
+            let keyEnconding = String(describing: $0).addingPercentEncoding(withAllowedCharacters: caracterQuery) ?? ""
+            let valueEnconding = String(describing: $1).addingPercentEncoding(withAllowedCharacters: caracterQuery) ?? ""
             return keyEnconding + "=" + valueEnconding
             }.joined(separator: "&")
     }

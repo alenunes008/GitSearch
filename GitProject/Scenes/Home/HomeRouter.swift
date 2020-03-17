@@ -23,9 +23,7 @@ protocol HomeDataPassing {
 class HomeRouter: NSObject, HomeRoutingLogic, HomeDataPassing {
   weak var viewController: HomeViewController?
   var dataStore: HomeDataStore?
-  
   // MARK: Routing
-  
   //func routeToSomewhere(segue: UIStoryboardSegue?)
   //{
   //  if let segue = segue {
@@ -42,14 +40,11 @@ class HomeRouter: NSObject, HomeRoutingLogic, HomeDataPassing {
   //}
 
   // MARK: Navigation
-  
   //func navigateToSomewhere(source: HomeViewController, destination: SomewhereViewController)
   //{
   //  source.show(destination, sender: nil)
   //}
-  
   // MARK: Passing data
-  
   //func passDataToSomewhere(source: HomeDataStore, destination: inout SomewhereDataStore)
   //{
   //  destination.name = source.name

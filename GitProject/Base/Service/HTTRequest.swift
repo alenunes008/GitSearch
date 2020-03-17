@@ -7,68 +7,46 @@
 //
 
 import Foundation
-struct HTTRequest<T : Codable> {
-    
-    typealias HTTPNewtorkingSuccess  = (T?)-> Swift.Void
-    typealias HTTPNewtorkingFailure  = (NSError)-> Swift.Void
-    typealias HTTPNetworkingDataTask = (Data?, URLResponse?, Error?)-> Swift.Void
-    var requestable : HTTPRequestable
 
-    func get(success : @escaping HTTPNewtorkingSuccess, failure : @escaping HTTPNewtorkingFailure) {
+enum ANResult<T> {
+    case success(value: T)
+}
+
+struct HTTRequest<T: Decodable> {
+    typealias HTTPNewtorkingSuccess = (T?)-> Swift.Void
+    typealias HTTPNewtorkingFailure = (NSError)-> Swift.Void
+    typealias HTTPNetworkingDataTask = (Data?, URLResponse?, Error?)-> Swift.Void
+    typealias HTTPNetworkingDataTaskNew = (Data?)-> Swift.Void
+    var requestable: HTTPRequestable
+
+    func getNew(result: @escaping (Result<T, Error>) -> Void) {
         var request = URLRequest(url: requestable.url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = requestable.headers
-
-        let session = URLSession.shared.dataTask(with: request) { data, response, error in
-            self.responseHandler(success: success, failure: failure)(data, response, error)
+        let session = URLSession.shared.dataTask(with: request) { data, _, error in
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    let json = try decoder.decode(T.self, from: data)
+                    DispatchQueue.main.async {
+                        result(.success(json))
+                    }
+                } catch let error {
+                    DispatchQueue.main.async {
+                        print(error)
+                    }
+                }
+            } else {
+                //TRATAR ERRO
+            }
         }
         session.resume()
     }
 
-    
-    func post(success : @escaping HTTPNewtorkingSuccess, failure : @escaping HTTPNewtorkingFailure) {
-        
-        var request = URLRequest(url: requestable.url)
-        request.httpMethod  = "POST"
-        request.allHTTPHeaderFields = requestable.headers
-        let session = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            self.responseHandler(success: success, failure: failure)(data, response, error)
-        }
-        session.resume()
-        
-    }
-    
-    private func responseHandler(success : @escaping HTTPNewtorkingSuccess, failure : @escaping HTTPNewtorkingFailure)-> HTTPNetworkingDataTask {
-        return { data, response, error in
-
-            if error != nil {
-                DispatchQueue.main.async {
-                    failure(error! as NSError)
-                    return
-                }
-            }
-            do {
-                let decoder = JSONDecoder()
-                let json = try data.map {
-                    return try decoder.decode(T.self, from: $0)
-                }
-                DispatchQueue.main.async {
-                    success(json)
-                }
-            }catch let error {
-                DispatchQueue.main.async {
-                    print(error)
-                    failure(error as NSError)
-                }
-            }
-        }
-    }
-    
-    public func encodeParams(params:[String: Any]) -> Data? {
+    public func encodeParams(params: [String: Any]) -> Data? {
         guard let jsonData = params.queryFormat().data(using: .utf8, allowLossyConversion: false) else {
             return nil
         }
         return jsonData
     }
-
 }

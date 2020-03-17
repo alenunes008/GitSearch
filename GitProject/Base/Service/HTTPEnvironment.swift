@@ -10,8 +10,7 @@ import Foundation
 
 enum HTTPEnvironment {
     case dev
-    
-    public var host : String {
-            return "https://api.github.com/"
+    public var host: String {
+            "https://api.github.com/"
     }
 }

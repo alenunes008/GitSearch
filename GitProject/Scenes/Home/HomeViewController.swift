@@ -12,19 +12,20 @@
 
 import UIKit
 
-protocol HomeDisplayLogic: class {
+protocol HomeDisplayLogic: AnyObject {
     func displayGit(viewModel: Home.Git.ViewModel)
     func displayError(viewModel: Home.Git.GitError)
 }
 
-class HomeViewController: UIViewController, HomeDisplayLogic
-{
+class HomeViewController: UIViewController, HomeDisplayLogic {
     var interactor: HomeBusinessLogic?
     var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
     var listGit = [Home.Git.ViewModeRepresentable]()
     var isRequest = false
     var currentePage = 0
-
+    let msgErro = "Sistema indisponível"
+    let nameCell = GitHomeCell.nibName
+    let idCell = GitHomeCell.identifier
 
     // MARK: Object lifecycle
 
@@ -79,11 +80,13 @@ class HomeViewController: UIViewController, HomeDisplayLogic
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     func doSomething() {
         indicator.startAnimating()
-        interactor?.doInteractorGit(id: "\(currentePage)")
+        interactor?.doInteractorGit(identificador: "\(currentePage)")
     }
 
     func displayError(viewModel: Home.Git.GitError) {
-        //Tratar erro
+        let alert = UIAlertController(title: "GitHub", message: msgErro, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Tentar novamente", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
     func displayGit(viewModel: Home.Git.ViewModel) {
@@ -102,27 +105,25 @@ class HomeViewController: UIViewController, HomeDisplayLogic
 
         self.gitTableView.estimatedRowHeight = 120
         self.gitTableView.rowHeight = 120
-
-        self.gitTableView.register(UINib(nibName: GitHomeCell.nibName, bundle: nil), forCellReuseIdentifier: GitHomeCell.identifier)
+        self.gitTableView.register(UINib(nibName: nameCell, bundle: nil), forCellReuseIdentifier: idCell)
     }
 }
-
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listGit.count
+        listGit.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = gitTableView.dequeueReusableCell(withIdentifier: GitHomeCell.identifier) as! GitHomeCell
-        cell.viewModel = listGit[indexPath.row]
-          cell.isAccessibilityElement = false
-          cell.contentView.isAccessibilityElement = false
-        return cell
+        let cell = gitTableView.dequeueReusableCell(withIdentifier: GitHomeCell.identifier) as? GitHomeCell
+        cell?.viewModel = listGit[indexPath.row]
+        cell?.isAccessibilityElement = false
+        cell?.contentView.isAccessibilityElement = false
+        return cell ?? UITableViewCell()
     }
 }
 
-extension HomeViewController{
+extension HomeViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height

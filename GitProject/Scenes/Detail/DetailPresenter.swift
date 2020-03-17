@@ -18,9 +18,7 @@ protocol DetailPresentationLogic {
 
 class DetailPresenter: DetailPresentationLogic {
     weak var viewController: DetailDisplayLogic?
-    
-    // MARK: Do something
-    
+    // MARK: Do something    
     func presentSomething(response: Detail.Something.Response) {
         let viewModel = Detail.Something.ViewModel()
         viewController?.displaySomething(viewModel: viewModel)

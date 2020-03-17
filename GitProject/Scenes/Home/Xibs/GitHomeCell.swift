@@ -9,13 +9,13 @@
 import UIKit
 
 protocol GitCellRepresentable {
-    var title: String?{get set}
-    var description: String?{get set}
-    var likes: String?{get set}
-    var shared: String?{get set}
-    var avatar: String?{get set}
-    var userName: String?{get set}
-    var surName: String?{get set}
+    var title: String? { get set }
+    var description: String? { get set }
+    var likes: String? { get set }
+    var shared: String? { get set }
+    var avatar: String? { get set }
+    var userName: String? { get set }
+    var surName: String? { get set }
 }
 
 class GitHomeCell: UITableViewCell {
@@ -31,9 +31,8 @@ class GitHomeCell: UITableViewCell {
     static let identifier = "GitHomeCellID"
     static let nibName = "GitHomeCell"
 
-
     var viewModel: GitCellRepresentable? {
-        didSet{
+        didSet {
             guard let viewModel = viewModel else {
                 titleLabel.text = nil
                 descriptionLabel.text = nil
@@ -57,7 +56,7 @@ class GitHomeCell: UITableViewCell {
             sharedLabel.isAccessibilityElement = true
             sharedLabel.accessibilityLabel = "Shared"
 
-            if let avatar = viewModel.avatar{
+            if let avatar = viewModel.avatar {
                 avatarImagem.isAccessibilityElement = true
                 avatarImagem.accessibilityLabel = "Avatar imagem"
                 avatarImagem.loadImage(from: avatar)
@@ -69,5 +68,4 @@ class GitHomeCell: UITableViewCell {
         super.prepareForReuse()
         viewModel = nil
     }
-    
 }

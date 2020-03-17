@@ -13,13 +13,12 @@ class HomeViewControllerTest: XCTestCase {
     var viewController: HomeViewController!
 
     func testStoryBoard() {
-        //arrange
+        //Arrange
         let story = UIStoryboard(name: "Main", bundle: nil)
-        viewController = story.instantiateViewController(withIdentifier: "HomeViewControllerID") as! HomeViewController
+        viewController = story.instantiateViewController(withIdentifier: "HomeViewControllerID") as? HomeViewController
+        //ACT
         viewController.loadView()
-      //ACT
+        //Assert
         XCTAssertNotNil(viewController.gitTableView)
-        
     }
-
 }

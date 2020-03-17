@@ -15,7 +15,6 @@ class HomeInteractorTeste: XCTestCase {
     var interactor: HomeInteractor?
     var homePresentSpy: PresentSpy!
 
-
     override func setUp() {
         interactor = HomeInteractor()
         interactor?.worker = WorkSpy()
@@ -25,27 +24,22 @@ class HomeInteractorTeste: XCTestCase {
     }
 
     func testInteractor() {
-        interactor?.doInteractorGit(id: "1")
+        interactor?.doInteractorGit(identificador: "1")
         let viewModel = homePresentSpy?.response
-
-        print(viewModel)
+        XCTAssertNotNil(viewModel)
     }
-
 
      func loadMock() {
          let mock = FakeService()
          let gitModel = mock.getMock(model: GitModel.self, file: mock.getData(name: "GitModel"))
-         if let git = gitModel{
+         if let git = gitModel {
              response = Home.Git.Response(gitModel: git)
-         }else{
+         } else {
              XCTAssertNotNil(response)
          }
      }
 
 }
-
-
-
 extension HomeInteractorTeste {
     class PresentSpy: HomePresentationLogic {
         var response: Home.Git.Response?
@@ -61,7 +55,7 @@ extension HomeInteractorTeste {
     }
 }
 
-class WorkSpy: HomeWorker{
+class WorkSpy: HomeWorker {
     let response: GitModel?
 
     override init() {
@@ -72,8 +66,8 @@ class WorkSpy: HomeWorker{
     override func doWorkGit(request: Home.Git.Request) {
         if let git = response {
             request.completion(.success(git))
-        }else{
-            request.completion(.failure(NSError(domain: "Erro na requisição da Tabela", code: 500, userInfo:nil)))
+        } else {
+            request.completion(.failure(NSError(domain: "Erro na requisição da Tabela", code: 500, userInfo: nil)))
         }
     }
 

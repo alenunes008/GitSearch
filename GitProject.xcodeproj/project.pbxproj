@@ -32,9 +32,9 @@
 		020F7DD124127F1400F88D08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 020F7DD024127F1400F88D08 /* Assets.xcassets */; };
 		020F7DD424127F1400F88D08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 020F7DD224127F1400F88D08 /* LaunchScreen.storyboard */; };
 		020F7DDF24127F1500F88D08 /* GitProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020F7DDE24127F1500F88D08 /* GitProjectTests.swift */; };
-		020F7DEA24127F1500F88D08 /* GitProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020F7DE924127F1500F88D08 /* GitProjectUITests.swift */; };
 		020F7DF824127F3C00F88D08 /* GitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020F7DF724127F3C00F88D08 /* GitModel.swift */; };
 		023EFD542412FA11005F3A00 /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023EFD532412FA11005F3A00 /* ViewControllerTest.swift */; };
+		023F749F241FE6DA00D715C2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 023F749E241FE6DA00D715C2 /* .swiftlint.yml */; };
 		02D773842416834F00E51060 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D7737E2416834F00E51060 /* DetailPresenter.swift */; };
 		02D773852416834F00E51060 /* DetailWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D7737F2416834F00E51060 /* DetailWorker.swift */; };
 		02D773862416834F00E51060 /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D773802416834F00E51060 /* DetailRouter.swift */; };
@@ -91,10 +91,10 @@
 		020F7DDE24127F1500F88D08 /* GitProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitProjectTests.swift; sourceTree = "<group>"; };
 		020F7DE024127F1500F88D08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		020F7DE524127F1500F88D08 /* GitProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		020F7DE924127F1500F88D08 /* GitProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitProjectUITests.swift; sourceTree = "<group>"; };
 		020F7DEB24127F1500F88D08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		020F7DF724127F3C00F88D08 /* GitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitModel.swift; sourceTree = "<group>"; };
 		023EFD532412FA11005F3A00 /* ViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerTest.swift; sourceTree = "<group>"; };
+		023F749E241FE6DA00D715C2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		02D7737E2416834F00E51060 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
 		02D7737F2416834F00E51060 /* DetailWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWorker.swift; sourceTree = "<group>"; };
 		02D773802416834F00E51060 /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
@@ -253,6 +253,7 @@
 		020F7DC624127F1200F88D08 /* GitProject */ = {
 			isa = PBXGroup;
 			children = (
+				023F749E241FE6DA00D715C2 /* .swiftlint.yml */,
 				020160CC2412956400DF14DD /* Assets */,
 				020160CB2412955600DF14DD /* Shared */,
 				020160C72412953000DF14DD /* Base */,
@@ -283,7 +284,6 @@
 		020F7DE824127F1500F88D08 /* GitProjectUITests */ = {
 			isa = PBXGroup;
 			children = (
-				020F7DE924127F1500F88D08 /* GitProjectUITests.swift */,
 				020F7DEB24127F1500F88D08 /* Info.plist */,
 			);
 			path = GitProjectUITests;
@@ -312,6 +312,7 @@
 				020F7DC024127F1200F88D08 /* Sources */,
 				020F7DC124127F1200F88D08 /* Frameworks */,
 				020F7DC224127F1200F88D08 /* Resources */,
+				02041EA5241FB920003DD3EC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -408,6 +409,7 @@
 			files = (
 				020F7DD424127F1400F88D08 /* LaunchScreen.storyboard in Resources */,
 				020160E02412961300DF14DD /* GitModel.json in Resources */,
+				023F749F241FE6DA00D715C2 /* .swiftlint.yml in Resources */,
 				020160DE241295E400DF14DD /* GitHomeCell.xib in Resources */,
 				020F7DD124127F1400F88D08 /* Assets.xcassets in Resources */,
 				020F7DCF24127F1200F88D08 /* Main.storyboard in Resources */,
@@ -429,6 +431,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		02041EA5241FB920003DD3EC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		020F7DC024127F1200F88D08 /* Sources */ = {
@@ -477,7 +499,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				020F7DEA24127F1500F88D08 /* GitProjectUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,6 +656,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YZSU9U4RV8;
 				INFOPLIST_FILE = GitProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -652,6 +674,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YZSU9U4RV8;
 				INFOPLIST_FILE = GitProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

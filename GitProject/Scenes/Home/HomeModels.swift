@@ -13,19 +13,17 @@
 import UIKit
 
 enum Home {
-    // MARK: Use cases
+    // MARK: Model's Git
     enum Git {
         struct Request {
-            let id: String
-            let completion: (_ detail: Result<GitModel, Error>) -> Void
+            let identify: String
         }
         struct Response {
-            let gitModel:GitModel
+            let gitModel: GitModel
         }
         struct ViewModel {
             let gitRepresentable: [ViewModeRepresentable]
         }
-        
         struct ViewModeRepresentable: GitCellRepresentable {
             var title: String?
             var description: String?
@@ -35,7 +33,6 @@ enum Home {
             var userName: String?
             var surName: String?
         }
-        
         struct GitError {
             let erro: Error
         }
