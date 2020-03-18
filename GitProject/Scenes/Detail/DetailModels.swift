@@ -14,12 +14,18 @@ import UIKit
 
 enum Detail {
     // MARK: Use cases
-    enum Something {
+    enum PullsRequest {
         struct Request {
+            let fullName: String
         }
         struct Response {
+            let pulls: Pulls
         }
         struct ViewModel {
+        }
+        
+        struct GitError {
+            let erro: Error
         }
     }
 }

@@ -13,6 +13,28 @@
 import UIKit
 
 class DetailWorker {
-  func doSomeWork() {
-  }
+    func doPullRequest(request: Detail.PullsRequest.Request, completion: @escaping (Result<Pulls, Error>) -> Void) {
+        let queryString = "\(request.fullName)/pulls"
+        let requestable = WorkerDetailRequestable(queryString: queryString)
+        let req: HTTRequest<Pulls> = HTTRequest(requestable: requestable)
+
+        req.get { (result) in
+            switch result{
+            case .success(let model):
+                completion(.success(model))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}
+
+struct WorkerDetailRequestable: HTTPRequestable {
+    var path: String {
+        "repos/"
+    }
+    var queryString: String
+    var url: URL {
+        URL(string: environment.host + path)!
+    }
 }

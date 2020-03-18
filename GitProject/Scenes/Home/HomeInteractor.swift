@@ -13,29 +13,41 @@
 import UIKit
 
 protocol HomeBusinessLogic {
-    func doInteractorGit(identificador: String)
+    func doInteractorGit(request: Home.Git.Request)
+    func getFullName(index: Int)
 }
 
 protocol HomeDataStore {
+    var fullName: String? { get set }
 }
 
 class HomeInteractor: HomeBusinessLogic, HomeDataStore {
+    var fullName: String?
     var presenter: HomePresentationLogic?
     var worker: HomeWorker?
+    var gitModel: Home.Git.Response?
 
     // MARK: Do Worker
-    func doInteractorGit(identificador: String) {
+    func doInteractorGit(request: Home.Git.Request) {
         worker = HomeWorker()
-        let req = Home.Git.Request(identify: identificador)
-        worker?.doWorkGit(request: req, completion: { (result) in
+        worker?.doWorkGit(request: request, completion: { (result) in
             switch result {
             case .success(let response):
-                let gitModel = Home.Git.Response(gitModel: response)
-                self.presenter?.presentGit(response: gitModel)
+                self.gitModel = Home.Git.Response(gitModel: response)
+                if let gitModel = self.gitModel {
+                    self.presenter?.presentGit(response: gitModel )
+                } else {
+                    let error = Home.Git.GitError(erro: NSError(domain: "Erro no parse", code: 500, userInfo: nil))
+                    self.presenter?.presentError(error: error)
+                }
             case .failure(let response):
                 let error = Home.Git.GitError(erro: response)
                 self.presenter?.presentError(error: error)
             }
         })
+    }
+
+    func getFullName(index: Int) {
+        fullName = gitModel?.gitModel.items[index].fullName
     }
 }

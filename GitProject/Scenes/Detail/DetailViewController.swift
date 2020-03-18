@@ -13,7 +13,7 @@
 import UIKit
 
 protocol DetailDisplayLogic: AnyObject {
-    func displaySomething(viewModel: Detail.Something.ViewModel)
+    func displaySomething(viewModel: Detail.PullsRequest.ViewModel)
 }
 
 class DetailViewController: UIViewController, DetailDisplayLogic {
@@ -70,11 +70,13 @@ class DetailViewController: UIViewController, DetailDisplayLogic {
     @IBOutlet weak var detailTable: UITableView!
 
     func doSomething() {
-        let request = Detail.Something.Request()
-        interactor?.doSomething(request: request)
+        if let fullName = interactor?.requestFullName {
+            let request = Detail.PullsRequest.Request(fullName: fullName)
+            interactor?.doPullsInteractor(request: request)
+        }
     }
 
-    func displaySomething(viewModel: Detail.Something.ViewModel) {
+    func displaySomething(viewModel: Detail.PullsRequest.ViewModel) {
         //nameTextField.text = viewModel.name
     }
 }

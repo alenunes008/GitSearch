@@ -16,7 +16,9 @@ enum Home {
     // MARK: Model's Git
     enum Git {
         struct Request {
-            let identify: String
+            var page: Int
+            let nameSearch: String
+            let sort: String
         }
         struct Response {
             let gitModel: GitModel

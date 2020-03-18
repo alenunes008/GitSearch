@@ -8,18 +8,10 @@
 
 import Foundation
 
-enum ANResult<T> {
-    case success(value: T)
-}
-
 struct HTTRequest<T: Decodable> {
-    typealias HTTPNewtorkingSuccess = (T?)-> Swift.Void
-    typealias HTTPNewtorkingFailure = (NSError)-> Swift.Void
-    typealias HTTPNetworkingDataTask = (Data?, URLResponse?, Error?)-> Swift.Void
-    typealias HTTPNetworkingDataTaskNew = (Data?)-> Swift.Void
     var requestable: HTTPRequestable
 
-    func getNew(result: @escaping (Result<T, Error>) -> Void) {
+    func get(result: @escaping (Result<T, Error>) -> Void) {
         var request = URLRequest(url: requestable.url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = requestable.headers
@@ -31,13 +23,15 @@ struct HTTRequest<T: Decodable> {
                     DispatchQueue.main.async {
                         result(.success(json))
                     }
-                } catch let error {
+                } catch {
                     DispatchQueue.main.async {
-                        print(error)
+                        result(.failure(error))
                     }
                 }
             } else {
-                //TRATAR ERRO
+                DispatchQueue.main.async {
+                    result(.failure(NSError(domain: "Erro na requisição ao serviço", code: 500, userInfo: nil)))
+                }
             }
         }
         session.resume()

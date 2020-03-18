@@ -15,18 +15,16 @@ import UIKit
 class HomeWorker {
 
     func doWorkGit(request: Home.Git.Request, completion: @escaping (Result<GitModel, Error>) -> Void) {
-        let params = ["q": "language:Java", "sort": "stars", "page": "\(request.identify)"].queryFormat()
+        let params = ["q": request.nameSearch, "sort": request.sort, "page": "\(request.page)"].queryFormat()
         let requestable = WorkerRequestable(queryString: params)
         let req: HTTRequest<GitModel> = HTTRequest(requestable: requestable)
 
-        req.getNew { (result) in
+        req.get { (result) in
             switch result {
             case .success(let model):
                 completion(.success(model))
-                print(model)
             case .failure(let erro):
-                completion(.failure(NSError(domain: "Erro na requisição da Tabela", code: 500, userInfo: nil)))
-                print(erro)
+                completion(.failure(erro))
             }
         }
     }

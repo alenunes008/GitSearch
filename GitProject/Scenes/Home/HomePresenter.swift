@@ -20,15 +20,16 @@ protocol HomePresentationLogic {
 class HomePresenter: HomePresentationLogic {
     weak var viewController: HomeDisplayLogic?
 
-    // MARK: Do something
+    // MARK: presentGit
 
     func presentGit(response: Home.Git.Response) {
         var representableList = [Home.Git.ViewModeRepresentable]()
 
         for gitModel in response.gitModel.items {
-            let git = Home.Git.ViewModeRepresentable(title: gitModel.name,
-                                                     description: gitModel.description,
-                                                     likes: "\(gitModel.forks)",
+            let git = Home.Git.ViewModeRepresentable(
+                title: gitModel.name,
+                description: gitModel.description,
+                likes: "\(gitModel.forks)",
                 shared: "\(gitModel.watchers)",
                 avatar: gitModel.owner.avatarURL,
                 userName: gitModel.name,

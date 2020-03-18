@@ -13,21 +13,36 @@
 import UIKit
 
 protocol DetailBusinessLogic {
-    func doSomething(request: Detail.Something.Request)
+    func doPullsInteractor(request: Detail.PullsRequest.Request)
+    var requestFullName: String? { get }
 }
 
 protocol DetailDataStore {
-    //var name: String { get set }
+    var fullName: String? { get set }
 }
 
 class DetailInteractor: DetailBusinessLogic, DetailDataStore {
+    var fullName: String?
+
     var presenter: DetailPresentationLogic?
     var worker: DetailWorker?
     // MARK: Do something
-    func doSomething(request: Detail.Something.Request) {
+    func doPullsInteractor(request: Detail.PullsRequest.Request) {
         worker = DetailWorker()
-        worker?.doSomeWork()
-        let response = Detail.Something.Response()
-        presenter?.presentSomething(response: response)
+        worker?.doPullRequest(request: request, completion: { (result) in
+            switch result {
+            case .success(let model):
+                let response = Detail.PullsRequest.Response(pulls: model)
+                self.presenter?.presentPulls(response: response)
+            case .failure(let erro):
+                let erroGit = Detail.PullsRequest.GitError(erro: erro)
+                self.presenter?.presenterErro(error: erroGit)
+            }
+        })
     }
+
+    var requestFullName: String? {
+        fullName
+    }
+
 }

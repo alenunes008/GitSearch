@@ -13,14 +13,19 @@
 import UIKit
 
 protocol DetailPresentationLogic {
-    func presentSomething(response: Detail.Something.Response)
+    func presentPulls(response: Detail.PullsRequest.Response)
+    func presenterErro(error: Detail.PullsRequest.GitError)
 }
 
 class DetailPresenter: DetailPresentationLogic {
     weak var viewController: DetailDisplayLogic?
     // MARK: Do something    
-    func presentSomething(response: Detail.Something.Response) {
-        let viewModel = Detail.Something.ViewModel()
+    func presentPulls(response: Detail.PullsRequest.Response) {
+        let viewModel = Detail.PullsRequest.ViewModel()
         viewController?.displaySomething(viewModel: viewModel)
+    }
+
+    func presenterErro(error: Detail.PullsRequest.GitError){
+        
     }
 }

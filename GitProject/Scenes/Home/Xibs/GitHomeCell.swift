@@ -9,13 +9,13 @@
 import UIKit
 
 protocol GitCellRepresentable {
-    var title: String? { get set }
-    var description: String? { get set }
-    var likes: String? { get set }
-    var shared: String? { get set }
-    var avatar: String? { get set }
-    var userName: String? { get set }
-    var surName: String? { get set }
+    var title: String? { get }
+    var description: String? { get }
+    var likes: String? { get }
+    var shared: String? { get }
+    var avatar: String? { get }
+    var userName: String? { get }
+    var surName: String? { get }
 }
 
 class GitHomeCell: UITableViewCell {

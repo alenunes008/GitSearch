@@ -70,17 +70,17 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareLayout()
-        doSomething()
+        doRequestGitSearch(currentPage: currentePage)
     }
 
     // MARK: Do something
 
     @IBOutlet weak var gitTableView: UITableView!
-
     @IBOutlet weak var indicator: UIActivityIndicatorView!
-    func doSomething() {
+    func doRequestGitSearch(currentPage: Int) {
         indicator.startAnimating()
-        interactor?.doInteractorGit(identificador: "\(currentePage)")
+        let request = Home.Git.Request(page: currentPage, nameSearch: "language:Java", sort: "stars")
+        interactor?.doInteractorGit(request: request)
     }
 
     func displayError(viewModel: Home.Git.GitError) {
@@ -121,6 +121,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.contentView.isAccessibilityElement = false
         return cell ?? UITableViewCell()
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        interactor?.getFullName(index: indexPath.row)
+        performSegue(withIdentifier: "segueDetail", sender: self)
+    }
 }
 
 extension HomeViewController {
@@ -128,7 +133,7 @@ extension HomeViewController {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         if offsetY > contentHeight - scrollView.frame.size.height && isRequest {
-            doSomething()
+            doRequestGitSearch(currentPage: currentePage)
             isRequest = false
         }
     }
