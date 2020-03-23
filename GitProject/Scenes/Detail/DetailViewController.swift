@@ -13,24 +13,16 @@
 import UIKit
 
 protocol DetailDisplayLogic: AnyObject {
-    func displaySomething(viewModel: Detail.PullsRequest.ViewModel)
+    func displayGitDetail(viewModel: Detail.PullsRequest.ViewModel)
+    func displayGitError(viewModel: Detail.PullsRequest.GitError)
 }
 
 class DetailViewController: UIViewController, DetailDisplayLogic {
     var interactor: DetailBusinessLogic?
     var router: (NSObjectProtocol & DetailDataPassing)?
-
-    // MARK: Object lifecycle
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
+    let nameCell = "DetailsCell"
+    let idCell = "DetailsCellID"
+    var listPulls = [Detail.PullsRequest.ViewModelRepresentable]()
 
     // MARK: Setup
 
@@ -45,6 +37,18 @@ class DetailViewController: UIViewController, DetailDisplayLogic {
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
+    }
+
+    // MARK: Object lifecycle
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
     }
 
     // MARK: Routing
@@ -62,21 +66,50 @@ class DetailViewController: UIViewController, DetailDisplayLogic {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        doSomething()
+        doPulls()
     }
 
     // MARK: Do something
 
-    @IBOutlet weak var detailTable: UITableView!
+    @IBOutlet weak var detailTable: UITableView! {
+        didSet {
+            self.detailTable.delegate = self
+            self.detailTable.dataSource = self
 
-    func doSomething() {
+            self.detailTable.estimatedRowHeight = 160
+            self.detailTable.rowHeight = 160
+            self.detailTable.register(UINib(nibName: nameCell, bundle: nil), forCellReuseIdentifier: idCell)
+        }
+    }
+
+    func doPulls() {
         if let fullName = interactor?.requestFullName {
             let request = Detail.PullsRequest.Request(fullName: fullName)
             interactor?.doPullsInteractor(request: request)
         }
     }
 
-    func displaySomething(viewModel: Detail.PullsRequest.ViewModel) {
-        //nameTextField.text = viewModel.name
+    func displayGitDetail(viewModel: Detail.PullsRequest.ViewModel) {
+        listPulls.append(contentsOf: viewModel.pullRepresentable)
+        detailTable.reloadData()
     }
+    func displayGitError(viewModel: Detail.PullsRequest.GitError) {
+    }
+}
+extension DetailViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         listPulls.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = detailTable.dequeueReusableCell(withIdentifier: idCell) as? DetailsCell
+        cell?.viewModel = listPulls[indexPath.row]
+        cell?.isAccessibilityElement = false
+        cell?.contentView.isAccessibilityElement = false
+        return cell ?? UITableViewCell()
+    }
+
+}
+
+extension DetailViewController: UITableViewDelegate {
 }

@@ -34,7 +34,7 @@ struct WorkerRequestable: HTTPRequestable {
     var path: String {
         "search/repositories?" + queryString
     }
-    var url: URL {
-        URL(string: environment.host + path)!
+    var url: URL? {
+        URL(string: environment.host + path)
     }
 }

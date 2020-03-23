@@ -10,7 +10,7 @@ import Foundation
 
 protocol HTTPRequestable: HTTPDomain {
     var path: String { get }
-    var url: URL { get }
+    var url: URL? { get }
     var queryString: String { get }
 }
 

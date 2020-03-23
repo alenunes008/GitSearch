@@ -21,11 +21,19 @@ class DetailPresenter: DetailPresentationLogic {
     weak var viewController: DetailDisplayLogic?
     // MARK: Do something    
     func presentPulls(response: Detail.PullsRequest.Response) {
-        let viewModel = Detail.PullsRequest.ViewModel()
-        viewController?.displaySomething(viewModel: viewModel)
-    }
+        var pullsRepresentable = [Detail.PullsRequest.ViewModelRepresentable]()
 
-    func presenterErro(error: Detail.PullsRequest.GitError){
-        
+        for pulls in response.pulls {
+            let pull = Detail.PullsRequest.ViewModelRepresentable(title: pulls.title,
+                                                                  avatar: pulls.user?.avatarUrl,
+                                                                  fullName: pulls.user?.login)
+            pullsRepresentable.append(pull)
+        }
+
+        let viewModel = Detail.PullsRequest.ViewModel(pullRepresentable: pullsRepresentable)
+        viewController?.displayGitDetail(viewModel: viewModel)
+    }
+    func presenterErro(error: Detail.PullsRequest.GitError) {
+        viewController?.displayGitError(viewModel: error)
     }
 }

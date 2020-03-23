@@ -12,9 +12,13 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct Pulls: Decodable {
+struct Pulls: Codable {
+    let pulls: [Pulls]
+}
+
+struct Pull: Decodable {
 	let url: String?
-	let identy: Int?
+	let identify: Int?
 	let nodeId: String?
 	let htmlUrl: String?
 	let diffUrl: String?
@@ -23,27 +27,29 @@ struct Pulls: Decodable {
 	let number: Int?
 	let user: User?
 	let body: String?
+    let title: String?
 	let authorAssociation: String?
 
 	enum CodingKeys: String, CodingKey {
 
-		case url = "url"
+		case url
 		case identy = "id"
 		case nodeId = "node_id"
 		case htmlUrl = "html_url"
 		case diffUrl = "diff_url"
 		case patchUrl = "patch_url"
 		case issueUrl = "issue_url"
-		case number = "number"
-		case user = "user"
-		case body = "body"
+		case number
+		case user
+		case body
+        case title
 		case authorAssociation = "author_association"
 	}
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
 		url = try values.decodeIfPresent(String.self, forKey: .url)
-		identy = try values.decodeIfPresent(Int.self, forKey: .identy)
+		identify = try values.decodeIfPresent(Int.self, forKey: .identy)
 		nodeId = try values.decodeIfPresent(String.self, forKey: .nodeId)
 		htmlUrl = try values.decodeIfPresent(String.self, forKey: .htmlUrl)
 		diffUrl = try values.decodeIfPresent(String.self, forKey: .diffUrl)
@@ -53,6 +59,7 @@ struct Pulls: Decodable {
 		user = try values.decodeIfPresent(User.self, forKey: .user)
 		body = try values.decodeIfPresent(String.self, forKey: .body)
 		authorAssociation = try values.decodeIfPresent(String.self, forKey: .authorAssociation)
+        title = try values.decodeIfPresent(String.self, forKey: .title)
 	}
 
 }

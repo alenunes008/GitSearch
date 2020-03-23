@@ -12,7 +12,11 @@ struct HTTRequest<T: Decodable> {
     var requestable: HTTPRequestable
 
     func get(result: @escaping (Result<T, Error>) -> Void) {
-        var request = URLRequest(url: requestable.url)
+        guard let url = requestable.url else {
+            result(.failure(NSError(domain: "Erro na requisição ao serviço", code: 500, userInfo: nil)))
+            return
+        }
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = requestable.headers
         let session = URLSession.shared.dataTask(with: request) { data, _, error in

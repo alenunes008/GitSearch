@@ -19,11 +19,16 @@ enum Detail {
             let fullName: String
         }
         struct Response {
-            let pulls: Pulls
+            let pulls: [Pull]
         }
         struct ViewModel {
+            let pullRepresentable: [ViewModelRepresentable]
         }
-        
+        struct ViewModelRepresentable: PullRepresentable {
+            var title: String?
+            var avatar: String?
+            var fullName: String?
+        }
         struct GitError {
             let erro: Error
         }
