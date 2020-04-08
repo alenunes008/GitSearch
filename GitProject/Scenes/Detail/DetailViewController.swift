@@ -18,10 +18,12 @@ protocol DetailDisplayLogic: AnyObject {
 }
 
 class DetailViewController: UIViewController, DetailDisplayLogic {
+    private enum Constasts {
+        static let nameCell = "DetailsCell"
+        static let idCell = "DetailsCellID"
+    }
     var interactor: DetailBusinessLogic?
     var router: (NSObjectProtocol & DetailDataPassing)?
-    let nameCell = "DetailsCell"
-    let idCell = "DetailsCellID"
     var listPulls = [Detail.PullsRequest.ViewModelRepresentable]()
 
     // MARK: Setup
@@ -78,7 +80,7 @@ class DetailViewController: UIViewController, DetailDisplayLogic {
 
             self.detailTable.estimatedRowHeight = 160
             self.detailTable.rowHeight = 160
-            self.detailTable.register(UINib(nibName: nameCell, bundle: nil), forCellReuseIdentifier: idCell)
+            self.detailTable.register(UINib(nibName: Constasts.nameCell, bundle: nil), forCellReuseIdentifier: Constasts.idCell)
         }
     }
 
@@ -102,7 +104,7 @@ extension DetailViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = detailTable.dequeueReusableCell(withIdentifier: idCell) as? DetailsCell
+        let cell = detailTable.dequeueReusableCell(withIdentifier: Constasts.idCell) as? DetailsCell
         cell?.viewModel = listPulls[indexPath.row]
         cell?.isAccessibilityElement = false
         cell?.contentView.isAccessibilityElement = false

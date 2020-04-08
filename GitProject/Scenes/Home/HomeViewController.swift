@@ -17,15 +17,18 @@ protocol HomeDisplayLogic: AnyObject {
     func displayError(viewModel: Home.Git.GitError)
 }
 
+
 class HomeViewController: UIViewController, HomeDisplayLogic {
+    private enum Constants {
+        static  let msgErro = "Sistema indisponível"
+        static  let nameCell = GitHomeCell.nibName
+        static let idCell = GitHomeCell.identifier
+    }
     var interactor: HomeBusinessLogic?
     var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
     var listGit = [Home.Git.ViewModeRepresentable]()
     var isRequest = false
     var currentePage = 0
-    let msgErro = "Sistema indisponível"
-    let nameCell = GitHomeCell.nibName
-    let idCell = GitHomeCell.identifier
 
     // MARK: Object lifecycle
 
@@ -84,7 +87,7 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     }
 
     func displayError(viewModel: Home.Git.GitError) {
-        let alert = UIAlertController(title: "GitHub", message: msgErro, preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "GitHub", message: Constants.msgErro, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Tentar novamente", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
@@ -105,7 +108,7 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
 
         self.gitTableView.estimatedRowHeight = 120
         self.gitTableView.rowHeight = 120
-        self.gitTableView.register(UINib(nibName: nameCell, bundle: nil), forCellReuseIdentifier: idCell)
+        self.gitTableView.register(UINib(nibName: Constants.nameCell, bundle: nil), forCellReuseIdentifier: Constants.idCell)
     }
 }
 
